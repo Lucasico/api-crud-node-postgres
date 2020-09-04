@@ -13,5 +13,4 @@ routes.put('/users/:id', asyncHandler(UserController.update));
 
 routes.delete('/users/:id', asyncHandler(UserController.delete));
 
-
 module.exports = routes

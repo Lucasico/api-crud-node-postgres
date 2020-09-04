@@ -8,7 +8,7 @@ const schema = yup.object().shape({
 })
 
 class UserController{
-    async store(req, res){
+    async store(req, res, next){
         schema.isValid(req.body)
         .then(function(valid){
             if(valid){
@@ -21,12 +21,12 @@ class UserController{
         
     }
 
-    async index(req, res){
+    async index(req, res, next){
         const users = await User.findAll()
         return res.json(users)
     }
 
-    async delete(req, res){
+    async delete(req, res, next){
         const  idUser  = req.params.id;
        
         const deleted = await User.destroy({
@@ -35,9 +35,11 @@ class UserController{
         if (deleted) {
              return res.status(200).send("Excluido com sucesso");
         }   
+        throw new Error('Something broke yet again! 😱')
+        
     }
 
-    async update(req, res){
+    async update(req, res, next){
         const idUser = req.params.id;
         //return res.json(idUser)  
         if(req.body.name == '' || req.body.email == '' || req.body.password == ''){
@@ -49,8 +51,8 @@ class UserController{
         if(updated){
             return res.json({user:"Atualizado com sucesso"})  
         } 
+        throw new Error('Something broke yet again!  😱')
     }
-
 }
 
 module.exports = new UserController()
